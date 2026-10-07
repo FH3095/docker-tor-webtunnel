@@ -1,0 +1,20 @@
+
+Nickname YourBridgeNickname
+ORPort RandomPortNotActuallyUsed
+ContactInfo YourEMailAddress@example.com
+ServerTransportOptions webtunnel url=YourWebtunnelUrl.example
+
+#RelayBandwidthRate 100MBits
+#RelayBandwidthBurst 300MBits
+
+ServerTransportListenAddr webtunnel 0.0.0.0:15000
+
+RunAsDaemon 0
+# We don't need an open SOCKS port.
+SocksPort 0
+BridgeRelay 1
+Log notice stdout
+ServerTransportPlugin webtunnel exec /usr/local/bin/webtunnel-server
+ExtORPort auto
+DataDirectory /var/lib/tor
+AssumeReachable 1

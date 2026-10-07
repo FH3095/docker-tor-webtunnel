@@ -1,0 +1,16 @@
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v1.*'
+jobs:
+  test:
+    runs-on: alpine
+    steps:
+      - uses: actions/checkout@v7
+      - run: apk add --no-cache docker-cli docker-cli-buildx
+      - run: |
+          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ vars.GHCR_USER }}" --password-stdin
+          docker build -t ghcr.io/${{ vars.GHCR_USER }}/${{ vars.GHCR_REPOSITORY }}:${{ forgejo.ref_name }} -t ghcr.io/${{ vars.GHCR_USER }}/${{ vars.GHCR_REPOSITORY }}:latest .
+          docker push ghcr.io/${{ vars.GHCR_USER }}/${{ vars.GHCR_REPOSITORY }}:${{ forgejo.ref_name }}
+          docker push ghcr.io/${{ vars.GHCR_USER }}/${{ vars.GHCR_REPOSITORY }}:latest
