@@ -5,7 +5,7 @@ RUN go install gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/we
 
 FROM docker.io/alpine:latest
 
-LABEL org.opencontainers.image.source https://github.com/FH3095/docker-tor-webtunnel
+LABEL org.opencontainers.image.source=https://github.com/FH3095/docker-tor-webtunnel
 
 RUN <<EOF
   set -eu
