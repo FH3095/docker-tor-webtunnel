@@ -1,0 +1,8 @@
+on: push
+jobs:
+  test:
+    runs-on: docker
+    steps:
+      - uses: actions/checkout@v7
+      - run: docker build .
+      - run: echo All good!
