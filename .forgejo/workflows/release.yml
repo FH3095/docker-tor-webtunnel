@@ -4,7 +4,7 @@ on:
     tags:
       - 'v1.*'
   schedule:
-    - cron: '47 10 * * 1'
+    - cron: '47 10 * * 5'
 jobs:
   test:
     runs-on: alpine
