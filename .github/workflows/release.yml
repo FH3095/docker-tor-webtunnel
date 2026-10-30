@@ -10,11 +10,12 @@ jobs:
     permissions:
       contents: read # to fetch the repository content
       id-token: write # for signing attestations and cache entries with GitHub OIDC
+      packages: write # To write to GHCR.io
     with:
       output: image
       push: true
       platforms: linux/amd64,linux/arm64
-      meta-images: ghcr.io/fh3095/docker-tor-webtunnel
+      meta-images: ghcr.io/${{ github.repository }}
       meta-tags: |
         type=semver,pattern={{version}}
         type=ref,event=branch
@@ -24,5 +25,5 @@ jobs:
     secrets:
       registry-auths: |
         - registry: ghcr.io
-          username: ${{ vars.GHCR_USERNAME }}
-          password: ${{ secrets.GHCR_TOKEN }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
