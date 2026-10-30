@@ -1,0 +1,28 @@
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v1.*'
+
+jobs:
+  build_container:
+    uses: docker/github-builder/.github/workflows/build.yml@cbc9d42f8c89a55623392aadd03600965b80e963
+    permissions:
+      contents: read # to fetch the repository content
+      id-token: write # for signing attestations and cache entries with GitHub OIDC
+    with:
+      output: image
+      push: false
+      platforms: linux/amd64,linux/arm64
+      meta-images: ghcr.io/fh3095/docker-tor-webtunnel
+      meta-tags: |
+        type=semver,pattern={{version}}
+        type=raw,enable=${{ github.event_name == 'workflow_dispatch' }},value=weekly
+      meta-flavor: |
+        latest=true
+    secrets:
+      registry-auths: |
+        - registry: ghcr.io
+          username: ${{ vars.GHCR_USERNAME }}
+          password: ${{ secrets.GHCR_TOKEN }}
+          
