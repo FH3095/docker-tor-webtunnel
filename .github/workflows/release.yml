@@ -12,17 +12,17 @@ jobs:
       id-token: write # for signing attestations and cache entries with GitHub OIDC
     with:
       output: image
-      push: false
+      push: true
       platforms: linux/amd64,linux/arm64
       meta-images: ghcr.io/fh3095/docker-tor-webtunnel
       meta-tags: |
         type=semver,pattern={{version}}
-        type=raw,enable=${{ github.event_name == 'workflow_dispatch' }},value=weekly
+        type=ref,event=branch
+        type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
       meta-flavor: |
-        latest=true
+        latest=false
     secrets:
       registry-auths: |
         - registry: ghcr.io
           username: ${{ vars.GHCR_USERNAME }}
           password: ${{ secrets.GHCR_TOKEN }}
-          
